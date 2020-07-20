@@ -67,6 +67,7 @@ public class EventIteratorImpl implements EventIterator {
         };
         // else, remove current
         map.remove(selectedKey);
+        selectedKey = null;
     }
 
     /**

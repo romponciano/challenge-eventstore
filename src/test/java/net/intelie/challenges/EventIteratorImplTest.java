@@ -94,4 +94,66 @@ public class EventIteratorImplTest {
         assertEquals(event.timestamp(), currEvent.timestamp());
         assertEquals(event.type(), currEvent.type());
     };
+
+    /**
+     * Test if remove works and does not call moveNext()
+     */
+    @Test(expected = IllegalStateException.class)
+    public void remove_validEvent_shouldRemoveAndNotMoveNext() {
+        concurrentMap.autoKeyPut(event);
+        eventIterator = new EventIteratorImpl(concurrentMap);
+        eventIterator.moveNext();
+        eventIterator.remove();
+        eventIterator.current();
+    };
+
+    /**
+     * Test if remove throws IllegalStateException if
+     * selectedKey is null
+     */
+    @Test(expected = IllegalStateException.class)
+    public void remove_selectKeyNull_shouldThrowIllegalState() {
+        eventIterator = new EventIteratorImpl(null);
+        eventIterator.moveNext();
+        eventIterator.remove();
+    };
+
+     /**
+     * Test if call moveNext works after remove
+     */
+    @Test
+    public void moveNext_validEvent_shouldWorkAfterRemove() {
+        Event event2 = new Event("teste2", 1l);
+        concurrentMap.autoKeyPut(event);
+        concurrentMap.autoKeyPut(event2);        
+        eventIterator = new EventIteratorImpl(concurrentMap);
+        eventIterator.moveNext();
+        eventIterator.remove();
+        eventIterator.moveNext();
+        assertEquals(event, eventIterator.current());
+    };
+
+    /**
+     * Test if close method really close and throws
+     * IllegalState if current() is called
+     */
+    @Test(expected = IllegalStateException.class)
+    public void close_current_shouldThrowExceptionAfterNewTry() throws Exception {
+        eventIterator = new EventIteratorImpl(null);
+        eventIterator.close();
+        assertEquals(false, eventIterator.moveNext());
+        eventIterator.current();
+    }
+
+    /**
+     * Test if close method really close and throws
+     * IllegalState if remove() is called
+     */
+    @Test(expected = IllegalStateException.class)
+    public void close_remove_shouldThrowExceptionAfterNewTry() throws Exception {
+        eventIterator = new EventIteratorImpl(null);
+        eventIterator.close();
+        assertEquals(false, eventIterator.moveNext());
+        eventIterator.remove();
+    }
 }

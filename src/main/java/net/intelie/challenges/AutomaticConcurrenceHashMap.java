@@ -15,7 +15,10 @@ public class AutomaticConcurrenceHashMap extends ConcurrentHashMap<String, Event
    * @param event
    */
   public void autoKeyPut(Event event) {
-    this.put(generateHashFromEvent(event), event);
+    String hash = generateHashFromEvent(event);
+    if(hash != null) {
+      this.put(hash, event);
+    }
   }
  
   /**
