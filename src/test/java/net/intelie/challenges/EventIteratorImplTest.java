@@ -67,7 +67,9 @@ public class EventIteratorImplTest {
         eventIterator = new EventIteratorImpl(concurrentMap);
         eventIterator.moveNext();
         eventIterator.moveNext();
-        assertEquals(event2, eventIterator.current());
+        Event currEvent = eventIterator.current();
+        assertEquals(event2.timestamp(), currEvent.timestamp());
+        assertEquals(event2.type(), currEvent.type());
     }
 
     /**
@@ -90,6 +92,8 @@ public class EventIteratorImplTest {
         concurrentMap.put(1l, event);
         eventIterator = new EventIteratorImpl(concurrentMap);
         eventIterator.moveNext();
-        assertEquals(event, eventIterator.current());
+        Event currEvent = eventIterator.current();
+        assertEquals(event.timestamp(), currEvent.timestamp());
+        assertEquals(event.type(), currEvent.type());
     };
 }
