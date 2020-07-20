@@ -1,3 +1,6 @@
+# Solution explanations
+All the explanation is commented in the file https://github.com/romponciano/challenge-eventstore/blob/master/src/test/java/net/intelie/challenges/ConcurrentTest.java
+
 # Implement EventStore
 
 In this challenge, you will create a class that implements the `EventStore` 
