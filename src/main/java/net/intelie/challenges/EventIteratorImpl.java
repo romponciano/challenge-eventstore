@@ -3,11 +3,11 @@ package net.intelie.challenges;
 import java.util.Iterator;
 
 public class EventIteratorImpl implements EventIterator {
-    private final AutomaticConcurrenceHashMap map;
+    private final AutomaticConcurrentHashMap map;
     private final Iterator<String> mapOrder;
     private String selectedKey = null;
 
-    public EventIteratorImpl(AutomaticConcurrenceHashMap map) {
+    public EventIteratorImpl(AutomaticConcurrentHashMap map) {
         this.map = map;
         // if map is null or empty, than it does not have an order
         if (this.map == null || this.map.isEmpty()) {

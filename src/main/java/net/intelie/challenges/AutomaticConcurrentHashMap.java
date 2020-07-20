@@ -2,11 +2,11 @@ package net.intelie.challenges;
 
 import java.util.concurrent.ConcurrentHashMap;
 
-public class AutomaticConcurrenceHashMap extends ConcurrentHashMap<String, Event> {
+public class AutomaticConcurrentHashMap extends ConcurrentHashMap<String, Event> {
 
   private static final long serialVersionUID = -1292289496279862210L;
 
-  public AutomaticConcurrenceHashMap() {
+  public AutomaticConcurrentHashMap() {
     super();
   }
 

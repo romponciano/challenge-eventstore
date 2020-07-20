@@ -8,12 +8,12 @@ import static org.junit.Assert.assertEquals;
 public class EventIteratorImplTest {
 
     EventIteratorImpl eventIterator;
-    AutomaticConcurrenceHashMap concurrentMap;
+    AutomaticConcurrentHashMap concurrentMap;
     Event event;
 
     @Before
     public void init() {
-        concurrentMap = new AutomaticConcurrenceHashMap();
+        concurrentMap = new AutomaticConcurrentHashMap();
         event = new Event("type1", Long.MAX_VALUE);
     };
 

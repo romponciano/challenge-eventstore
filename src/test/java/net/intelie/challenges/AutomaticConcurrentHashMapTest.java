@@ -8,13 +8,13 @@ import java.util.concurrent.ConcurrentHashMap;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-public class AutomaticConcurrenceHashMapTest {
+public class AutomaticConcurrentHashMapTest {
 
-    AutomaticConcurrenceHashMap concurrenceMap;
+    AutomaticConcurrentHashMap concurrenceMap;
 
     @Before
     public void init() {
-        concurrenceMap = new AutomaticConcurrenceHashMap();
+        concurrenceMap = new AutomaticConcurrentHashMap();
     }
 
     /**

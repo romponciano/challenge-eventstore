@@ -5,7 +5,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class EventStoreImpl implements EventStore {  
 
-  private final ConcurrentHashMap<String, AutomaticConcurrenceHashMap> events = new ConcurrentHashMap<>();
+  private final ConcurrentHashMap<String, AutomaticConcurrentHashMap> events = new ConcurrentHashMap<>();
 
   /**
      * Stores an event
@@ -19,7 +19,7 @@ public class EventStoreImpl implements EventStore {
       } 
       // else, create the new concurrenthashmap and insert new event to it
       else {
-        AutomaticConcurrenceHashMap newEvent = new AutomaticConcurrenceHashMap();
+        AutomaticConcurrentHashMap newEvent = new AutomaticConcurrentHashMap();
         newEvent.autoKeyPut(event);
         events.put(event.type(), newEvent);
       };
@@ -47,7 +47,7 @@ public class EventStoreImpl implements EventStore {
      */
     public EventIterator query(String type, long startTime, long endTime) {
       if(type != null && events.containsKey(type)) {
-        AutomaticConcurrenceHashMap result = new AutomaticConcurrenceHashMap();
+        AutomaticConcurrentHashMap result = new AutomaticConcurrentHashMap();
         // get the concurrenthashmap with all events of determinated type
         // for each entry in map, check if timestamp is between
         // startTime (inclusive) and endTime (exclusive)
