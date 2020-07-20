@@ -17,11 +17,17 @@ public class AutomaticConcurrenceHashMapTest {
         concurrenceMap = new AutomaticConcurrenceHashMap();
     }
 
+    /**
+     * Test if construct create a correct instance of ConcurrentHashMap
+     */
     @Test
     public void constructor_valid_shouldCreateInstanceOfConcurrentHashMap() {
         assertTrue(concurrenceMap instanceof ConcurrentHashMap);
     };
 
+    /**
+     * Test if autokeyput insert a new row with the correct hash
+     */
     @Test
     public void autoKeyPut_validEvent_shouldInsertCorrectEvent() {
         long timestamp = 12l;
@@ -32,6 +38,10 @@ public class AutomaticConcurrenceHashMapTest {
         assertEquals(newEvent, concurrenceMap.get(hash));
     };
 
+    /**
+     * Test if autoKeyPut with null just ignores and
+     * don't insert anything neither throw exceptions
+     */
     @Test
     public void autoKeyPut_nullEvent_shouldNotAdd() {
         concurrenceMap.autoKeyPut(null);
