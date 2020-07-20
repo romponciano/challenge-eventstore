@@ -7,7 +7,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class EventStoreImpl implements EventStore {  
 
-  private final ConcurrentHashMap<String, List<ConcurrentHashMap<String, Event>>> events = new ConcurrentHashMap<>();
+  private final ConcurrentHashMap<String, List<AutomaticConcurrenceHashMap>> events = new ConcurrentHashMap<>();
 
   /**
      * Stores an event
@@ -15,15 +15,15 @@ public class EventStoreImpl implements EventStore {
      * @param event
      */
     public void insert(Event event) {
-      ConcurrentHashMap<String, Event> newEvent = new ConcurrentHashMap<>();
-      newEvent.put(Utils.generateHashFromEvent(event), event);
+      AutomaticConcurrenceHashMap newEvent = new AutomaticConcurrenceHashMap();
+      newEvent.autoKeyPut(event);
       // if already have event type list, then just get and add to it
-      if(events.contains(event.type())) {
+      if(events.containsKey(event.type())) {
         events.get(event.type()).add(newEvent);
       } 
       // else, create the new list and insert new event to it
       else {
-        List<ConcurrentHashMap<String, Event>> newList = new ArrayList<>();
+        List<AutomaticConcurrenceHashMap> newList = new ArrayList<>();
         newList.add(newEvent);
         events.put(event.type(), newList);
       };
@@ -50,17 +50,17 @@ public class EventStoreImpl implements EventStore {
      * (inclusive) and {@param endTime} (exclusive).
      */
     public EventIterator query(String type, long startTime, long endTime) {
-      if(events.contains(type)) {
-        ConcurrentHashMap<String, Event> result = new ConcurrentHashMap<>();
-        // get the list with all ConcurrentHashMaps of determinated type
-        for(ConcurrentHashMap<String, Event> typeHash : events.get(type)) {
+      if(type != null && events.containsKey(type)) {
+        AutomaticConcurrenceHashMap result = new AutomaticConcurrenceHashMap();
+        // get the list with all AutomaticConcurrenceHashMaps of determinated type
+        for(AutomaticConcurrenceHashMap typeHash : events.get(type)) {
           // for each entry in list, check if timestamp is between 
           // startTime (inclusive) and endTime (exclusive)
           for(Map.Entry<String, Event> entry : typeHash.entrySet()) {
             Event auxEvent = entry.getValue();
             long timestamp = auxEvent.timestamp();
             if(timestamp >= startTime && timestamp < endTime) {
-              result.put(Utils.generateHashFromEvent(auxEvent), entry.getValue());
+              result.autoKeyPut(entry.getValue());
             };
           };
         };

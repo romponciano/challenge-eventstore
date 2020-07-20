@@ -1,14 +1,13 @@
 package net.intelie.challenges;
 
 import java.util.Iterator;
-import java.util.concurrent.ConcurrentHashMap;
 
 public class EventIteratorImpl implements EventIterator {
-    private final ConcurrentHashMap<String, Event> map;
+    private final AutomaticConcurrenceHashMap map;
     private final Iterator<String> mapOrder;
     private String selectedKey = null;
 
-    public EventIteratorImpl(ConcurrentHashMap<String, Event> map) {
+    public EventIteratorImpl(AutomaticConcurrenceHashMap map) {
         this.map = map;
         // if map is null or empty, than it does not have an order
         if (this.map == null || this.map.isEmpty()) {

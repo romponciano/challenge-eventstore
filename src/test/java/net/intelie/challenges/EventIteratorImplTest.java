@@ -5,17 +5,15 @@ import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
 
-import java.util.concurrent.ConcurrentHashMap;
-
 public class EventIteratorImplTest {
 
     EventIteratorImpl eventIterator;
-    ConcurrentHashMap<String, Event> concurrentMap;
+    AutomaticConcurrenceHashMap concurrentMap;
     Event event;
 
     @Before
     public void init() {
-        concurrentMap = new ConcurrentHashMap<String, Event>();
+        concurrentMap = new AutomaticConcurrenceHashMap();
         event = new Event("type1", Long.MAX_VALUE);
     };
 
@@ -25,7 +23,7 @@ public class EventIteratorImplTest {
      */
     @Test(expected = IllegalStateException.class)
     public void current_beforeMoveNext_shouldThrowIllegalState() {
-        concurrentMap.put(Utils.generateHashFromEvent(event), event);
+        concurrentMap.autoKeyPut(event);
         eventIterator = new EventIteratorImpl(concurrentMap);
         eventIterator.current();
     }
@@ -36,7 +34,7 @@ public class EventIteratorImplTest {
      */
     @Test(expected = IllegalStateException.class)
     public void current_noSecondEvent_shouldThrowIllegalState() {
-        concurrentMap.put(Utils.generateHashFromEvent(event), event);
+        concurrentMap.autoKeyPut(event);
         eventIterator = new EventIteratorImpl(concurrentMap);
         eventIterator.moveNext();
         eventIterator.moveNext();
@@ -48,7 +46,7 @@ public class EventIteratorImplTest {
      */
     @Test
     public void moveNext_noSecondEvent_shouldNotHaveNext() {
-        concurrentMap.put(Utils.generateHashFromEvent(event), event);
+        concurrentMap.autoKeyPut(event);
         eventIterator = new EventIteratorImpl(concurrentMap);
         eventIterator.moveNext();
         assertEquals(false, eventIterator.moveNext());
@@ -60,10 +58,10 @@ public class EventIteratorImplTest {
      */
     @Test
     public void moveNext_validTwoEvents_shouldGet() {
-        concurrentMap.put(Utils.generateHashFromEvent(event), event);
+        concurrentMap.autoKeyPut(event);
         // Long.MIN to 'be different from previous one
         Event event2 = new Event("type2", Long.MIN_VALUE); 
-        concurrentMap.put(Utils.generateHashFromEvent(event2), event2);
+        concurrentMap.autoKeyPut(event2);
         eventIterator = new EventIteratorImpl(concurrentMap);
         eventIterator.moveNext();
         eventIterator.moveNext();
@@ -89,7 +87,7 @@ public class EventIteratorImplTest {
      */
     @Test
     public void constructor_validEvent_shouldConstructCorrectly() {
-        concurrentMap.put(Utils.generateHashFromEvent(event), event);
+        concurrentMap.autoKeyPut(event);
         eventIterator = new EventIteratorImpl(concurrentMap);
         eventIterator.moveNext();
         Event currEvent = eventIterator.current();
